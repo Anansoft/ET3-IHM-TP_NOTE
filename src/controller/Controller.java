@@ -17,28 +17,30 @@ import javafx.scene.shape.Shape;
 
 public class Controller extends VBox{
 	
-	@FXML private AnchorPane anchor;
-	@FXML private ColorPicker colorSelect;
-	@FXML private RadioButton buttonSelect;
-	@FXML private RadioButton buttonEllipse;
-	@FXML private RadioButton buttonRect;
-	@FXML private RadioButton buttonLine;
-	@FXML private Button buttonDel;
-	@FXML private Button buttonClone;
-	@FXML private Pane pane;
+	@FXML private AnchorPane anchor; //Main anchor Pane
+	@FXML private ColorPicker colorSelect; //ColorPicker for the color of the shape
+	@FXML private RadioButton buttonSelect; //Radio Button for selecting shapes
+	@FXML private RadioButton buttonEllipse; //Radio Button to draw an Ellipse
+	@FXML private RadioButton buttonRect; //Radio Button to draw a Rectangle
+	@FXML private RadioButton buttonLine; //Radio Button to draw a Line
+	@FXML private Button buttonDel; //Button to delete the selected shape
+	@FXML private Button buttonClone; //Button to clone the selected shape
+	@FXML private Pane pane; //Pane where the shapes are drawn
 
-	private ToggleGroup group = new ToggleGroup();
-	private javafx.scene.paint.Color selectedColor;
-	private String wantedShape;
-	private Shape selectedShape;
-	private double orgSceneX;
-	private double orgSceneY;
-	private double orgTranslateX;
-	private double orgTranslateY;
-	private int clickCount = 0;
-	private double x1=0, x2=0, y1=0, y2=0;
-	//1private ArrayList<Shape> selectionModel = new ArrayList<Shape>();
+	private ToggleGroup group = new ToggleGroup(); //alows 
+	private javafx.scene.paint.Color selectedColor; //the color selected for drawing the shape
+	private String wantedShape; //string of the shape to be drawn
+	private Shape selectedShape; //the shape to be selected
+	private double orgSceneX; //X coordinate of the selected shape
+	private double orgSceneY; //Y coordinate of the selected shape
+	private double orgTranslateX; //X for the translation
+	private double orgTranslateY; //Y for the translation
+	private int clickCount = 0; //number of lick for drawing lines
+	private double x1=0, x2=0, y1=0, y2=0; //coordinates for the drawing of lines
 	
+	/**
+	 * EventHandler to select shape
+	 */
 	EventHandler<MouseEvent> shapeMousePressedEventHandler = new EventHandler<MouseEvent>() {
 	 
 	        @Override
@@ -54,26 +56,35 @@ public class Controller extends VBox{
 	        }
 	    };
 	    
+	/**
+	 * Eventhandler for click and drag
+	 */
     EventHandler<MouseEvent> shapeOnMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
 	     
-	            @Override
-	            public void handle(MouseEvent drag) {
-	            	if(buttonSelect.isSelected()) {
-	            		double offsetX = drag.getSceneX() - orgSceneX;
-		                double offsetY = drag.getSceneY() - orgSceneY;
-		                double newTranslateX = orgTranslateX + offsetX;
-		                double newTranslateY = orgTranslateY + offsetY;
-		                
-		                ((Shape)(drag.getSource())).setTranslateX(newTranslateX);
-		                ((Shape)(drag.getSource())).setTranslateY(newTranslateY);
-	            	}
-	            }
-	        };
+            @Override
+            public void handle(MouseEvent drag) {
+            	if(buttonSelect.isSelected()) {
+            		double offsetX = drag.getSceneX() - orgSceneX;
+	                double offsetY = drag.getSceneY() - orgSceneY;
+	                double newTranslateX = orgTranslateX + offsetX;
+	                double newTranslateY = orgTranslateY + offsetY;
+	                
+	                ((Shape)(drag.getSource())).setTranslateX(newTranslateX);
+	                ((Shape)(drag.getSource())).setTranslateY(newTranslateY);
+            	}
+            }
+        };
 	
+    /**
+     * Constructor of the class
+     */
 	public Controller(){
 
 	}
 	
+	/**
+	 * Controller for the clone button
+	 */
 	@FXML
 	public void buttonCloneCommand() {
 		if(selectedShape.getClass() == Rectangle.class) {
@@ -87,41 +98,54 @@ public class Controller extends VBox{
 		}
 	}
 
+	/**
+	 * Controller for the delete button
+	 */
 	@FXML
 	public void buttonDelCommand() {
 		pane.getChildren().remove(selectedShape);
 		disableButton(true);
-		/*
-		for(Node n:selectionModel) {
-			pane.getChildren().remove(n);
-		}
-		*/
 	}
 
+	/**
+	 * Controller for the select button
+	 */
 	@FXML
 	public void buttonSelectCommand() {
 		wantedShape = null;
 		//buttonDel.setDisable(false);
 	}
 	
+	/**
+	 * Controller for the rectangle radio button
+	 */
 	@FXML
 	public void buttonRecCommand(){
 		wantedShape = "Rectangle";
 		disableButton(true);
 	}
 	
+	/**
+	 * Controller for the ellipse radio button
+	 */
 	public void buttonEllCommand() {
 		wantedShape = "Ellipse";
 		disableButton(true);
 		//buttonDel.setDisable(false);
 	}
 	
+	/**
+	 * Controller for the line radio button
+	 */
 	public void buttonLineCommand() {
 		wantedShape = "Line";
 		disableButton(true);
 		//buttonDel.setDisable(false);
 	}
 	
+	/**
+	 * Controller for the pane
+	 */
 	@FXML
 	public void paneCommand(){
 		pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -151,24 +175,13 @@ public class Controller extends VBox{
 			        		break;
 			        }
 		        }
-		       
-		        /*
-		        if(wantedShape == "Rectangle") {
-		        	updateColor();
-		    		//mouse = MouseInfo.getPointerInfo().getLocation();
-		    		drawRectangle(click.getX(), click.getY());
-		    		/*
-		    		Rectangle rect = new Rectangle(50,30, selectedColor);
-		    		rect.relocate(click.getX(), click.getY());
-		    		rect.setOnMousePressed(shapeMousePressedEventHandler);
-		    		rect.setOnMouseDragged(shapeOnMouseDraggedEventHandler);
-		    		pane.getChildren().add(rect);
-		        }
-		        */
 		    }
 		});
 	}
 	
+	/**
+	 * Controller for the color picker 
+	 */
 	public void colorSelectCommand() {
 		if(buttonSelect.isSelected()) {
 			if(selectedShape != null) {
@@ -184,10 +197,18 @@ public class Controller extends VBox{
 		}
 	}
 	
+	/**
+	 * Update the selected colors by colorPicker
+	 */
 	public void updateColor(){
 		selectedColor = colorSelect.getValue();
 	}
 	
+	/**
+	 * Draw rectangle
+	 * @param x x coordinate of the wanted position
+	 * @param y y coordinate of the wanted position
+	 */
 	public void drawRectangle(double x, double y){
 		updateColor();
 		//mouse = MouseInfo.getPointerInfo().getLocation();
@@ -198,6 +219,11 @@ public class Controller extends VBox{
 		pane.getChildren().add(rect);
 	}
 	
+	/**
+	 * Draw elllipse
+	 * @param x x coordinate of the wanted position
+	 * @param y y coordinate of the wanted position
+	 */
 	public void drawEllipse(double x, double y){
 		updateColor();
 		//mouse = MouseInfo.getPointerInfo().getLocation();
@@ -209,6 +235,13 @@ public class Controller extends VBox{
 		pane.getChildren().add(elli);
 	}
 	
+	/**
+	 * Draw line 
+	 * @param x1 x coordinate of the first point
+	 * @param y1 y coordinate of the first point
+	 * @param x2 x coordinate of the first point
+	 * @param y2 y coordinate of the first point
+	 */
 	public void drawLine(double x1, double y1, double x2, double y2) {
 		updateColor();
 		Line line = new Line();
@@ -221,11 +254,19 @@ public class Controller extends VBox{
 		pane.getChildren().add(line);
 	}
 	
+	/**
+	 * Disables all the buttons
+	 * @param bool Disables if true and enable if false
+	 */
 	public void disableButton(boolean bool) {
 		buttonDel.setDisable(bool);
     	buttonClone.setDisable(bool);
 	}
 	
+	/**
+	 * Intializing function
+	 * Allows to disable the right buttons
+	 */
 	@FXML
 	public void initialize(){
 		buttonSelect.setToggleGroup(group);
