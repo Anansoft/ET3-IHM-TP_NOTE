@@ -6,4 +6,5 @@ Professeur encadrant: Cédric FLeury
 
 Encadrant de TP: Amira Kamli
 
+Sujet disponible: https://ex-situ.lri.fr/people/jean-philippe-riviere/polytech-ihm
 Note:
