@@ -1,0 +1,15 @@
+								BONUS 1:
+
+Il est tout à fait possible de dstinguer cette application en suivant le schéma Modele-Vue-Controlleur.
+
+
+On pourra mettre dans la section Modèle on peut mettre:
+		La section MODELE contiendra toutes les fonction draw...() et paneCommand() qui permettent d'ajouter les formes au Pane.
+	Les fonctions draw...() extrait les coordonées qui sont données pas paneCommand().
+	
+		Le Pane et toutes ses définitions seront contenues dans la section VUE.
+	Le Pane servira de moyen de communication avec l'utilisateur. Il permet l'affichage mais permettra aussi la 
+	sélection des formes que l'on veut modifier.
+	
+		Toutes les autres fonctions de type ...Command() excepté la paneCommand() seront contenue dans la section CONTROLLERUR.
+	Ces fonctions permettent de modifier les valeurs et les états des widgets composant l'application.
